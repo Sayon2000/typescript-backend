@@ -8,15 +8,17 @@ router.get('/', (req, res) => {
 });
 router.post('/todo', (req, res) => {
     const id = todos.length === 0 ? 0 : +todos[todos.length - 1].id + 1;
+    const body = req.body;
     const newTodo = {
         id: id,
-        text: req.body.text
+        text: body.text
     };
     todos.push(newTodo);
     return res.json({ success: true, todo: newTodo });
 });
 router.post('/deleteTodo/:id', (req, res) => {
-    const id = +req.params.id;
+    const params = req.params;
+    const id = +params.id;
     const index = todos.findIndex(item => item.id === id);
     if (index < 0) {
         return res.status(404).json({ success: false, msg: "item does not exist " });
